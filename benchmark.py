@@ -57,5 +57,5 @@ def trap5(array):
 
 def six_bipolar(array):
     count = len([e for e in array if e == 1])    
-    three_deceptive(abs(3-count))
+    return three_deceptive(abs(3-count))
     
