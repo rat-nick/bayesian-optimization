@@ -40,3 +40,22 @@ def levin13(array):
     y = array[1]
     z = np.sin(3 * np.pi * x)**2 + ((x - 1)**2 * (1 + np.sin(3 * np.pi * y)**2) + ((y - 1)**2 * (1 + np.sin(2 * np.pi * y)**2) ))
     return z
+
+def three_deceptive(array):
+    count = len([e for e in array if e == 1])
+    
+    if count == 0 return .9
+    if count == 1 return .8
+    if count == 2 return 0
+    return 1
+
+def trap5(array):
+    count = len([e for e in array if e == 1])    
+    
+    if count < 5 return 4 - count
+    return 5
+
+def six_bipolar(array):
+    count = len([e for e in array if e == 1])    
+    three_deceptive(abs(3-count))
+    
