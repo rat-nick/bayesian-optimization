@@ -15,6 +15,9 @@ class SearchSpace:
       point.append(a.sample())
     return point
   
+  def sample_multiple(self, num):
+    return [self.sample() for i in range(num)]
+  
 class Axis:
   """
   Class to represent an axis of the search space 
@@ -25,15 +28,8 @@ class Axis:
     self.distribution = distribution
     self.pos_constraints = args
     self.kw_constraints = kwargs
-    print(kwargs)
+    #print(kwargs)
       
   def sample(self):
     return self.distribution(*(self.pos_constraints),**(self.kw_constraints))
-    
 
-space = SearchSpace(
-  [Axis(choice, [0,1]) for i in range(0,10)]
-)
-
-p = space.sample()
-print(p)

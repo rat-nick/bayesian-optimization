@@ -1,8 +1,10 @@
 import numpy as np
 from numpy.random import normal
+
+
 def benchmark_func(array):
-    fitness = -sphere(array)
-    return fitness + normal() # return a noisy output of the function
+    fitness = three_deceptive(array)
+    return fitness
 
 
 def schwefel(array):
@@ -13,11 +15,13 @@ def schwefel(array):
     fitness = 418.9829 * len(array) - sum
     return fitness
 
+
 def sphere(array):
     fitness = 0
     for i in range(len(array)):
         fitness = fitness + array[i]**2
     return fitness
+
 
 def rastrigin(array):
     sum = 0
@@ -27,35 +31,50 @@ def rastrigin(array):
     fitness = 10.0 * len(array) + sum
     return fitness
 
+
 def eggholder(array):
-    z = - (array[1] + 47) * np.sin(np.sqrt(abs(array[1] + (array[0]/2) +47))) - array[0] *np.sin(np.sqrt(abs(array[0] - (array[1]+47))))
+    z = - (array[1] + 47) * np.sin(np.sqrt(abs(array[1] + (array[0]/2) + 47))
+                                   ) - array[0] * np.sin(np.sqrt(abs(array[0] - (array[1]+47))))
     return z
 
-def matyas(array):  
+
+def matyas(array):
     z = 0.26 * (array[0]**2 + array[1]**2) - (0.48 * array[0] * array[1])
     return z
+
 
 def levin13(array):
     x = array[0]
     y = array[1]
-    z = np.sin(3 * np.pi * x)**2 + ((x - 1)**2 * (1 + np.sin(3 * np.pi * y)**2) + ((y - 1)**2 * (1 + np.sin(2 * np.pi * y)**2) ))
+    z = np.sin(3 * np.pi * x)**2 + ((x - 1)**2 * (1 + np.sin(3 *
+                                                             np.pi * y)**2) + ((y - 1)**2 * (1 + np.sin(2 * np.pi * y)**2)))
     return z
+
 
 def three_deceptive(array):
     count = len([e for e in array if e == 1])
-    
-    if count == 0 return .9
-    if count == 1 return .8
-    if count == 2 return 0
+
+    if count == 0:
+        return .9
+    if count == 1:
+        return .8
+    if count == 2:
+        return 0
     return 1
 
+
 def trap5(array):
-    count = len([e for e in array if e == 1])    
-    
-    if count < 5 return 4 - count
+    count = len([e for e in array if e == 1])
+
+    if count < 5:
+        return 4 - count
     return 5
 
+
 def six_bipolar(array):
-    count = len([e for e in array if e == 1])    
+    count = len([e for e in array if e == 1])
     return three_deceptive(abs(3-count))
-    
+
+
+def one_max(array):
+    return len([e for e in array if e == 1])
