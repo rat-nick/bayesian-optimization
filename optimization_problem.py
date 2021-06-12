@@ -7,3 +7,6 @@ class OptimizationProblem:
         self.search_space = search_space
         self.function = function
         self.optimal_value = optimal_value
+
+    def evaluate(self):
+        return self.function(self.search_space.sample())

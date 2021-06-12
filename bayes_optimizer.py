@@ -14,32 +14,30 @@ class BayesOptimizer:
         self,
         op,
         model,
-        starting_sample_size=100,
-        sample_size=100,
         max_iterations=1000,
         epsilon=0.01,
     ):
         self.op = op
         self.model = model
-        self.starting_sample_size = starting_sample_size
+        
         self.epsilon = epsilon
-        self.sample_size = sample_size
+        
         self.max_iterations = max_iterations
 
         self.__best_found = nan
         self.__i = 0
 
-    def optimize(self, debug=False):
+    def optimize(self, debug=False, *args, **kwargs):
         """Method for opitmizing the objective function"""
         # sample the search space
-        X = self.op.search_space.sample_multiple(self.starting_sample_size)
+        X = self.op.search_space.sample_multiple(kwargs["start_sample_size"])
         # print(X)
         y = asarray([self.op.function(x) for x in X])
         # print(y)
         self.__i = 0
         while self.__i < self.max_iterations:
             # select next point to sample
-            x = self.__opt_acquisition(X, y)
+            x = self.__opt_acquisition(X, kwargs['sample_size'], y)
             # evaluate the point with the fuction
             actual = self.op.function(x)
             if isnan(self.__best_found) or self.__best_found < actual:
@@ -48,12 +46,14 @@ class BayesOptimizer:
             # summarize the finding
             est, _ = self.__surrogate([x])
             if debug:
-                print("Surrogate estimate", est)
-                print("Actual value ", actual)
+                print(x + [actual])
+                #print("Surrogate estimate", est)
+                #print("Actual value ", actual)
+                
             if (not isnan(self.op.optimal_value)) and abs(
                 actual - self.op.optimal_value
             ) < self.epsilon:
-                print("Converged at ", self.__i, " iteration")
+                #p rint("Converged at ", self.__i, " iteration")
                 return self.__i
             # add the data to the dataset
             X = vstack((X, [x]))
@@ -78,8 +78,8 @@ class BayesOptimizer:
         probs = norm.cdf((mu - best) / (std + 1e-9))
         return probs
 
-    def __opt_acquisition(self, X, y):
-        Xsamples = self.op.search_space.sample_multiple(self.sample_size)
+    def __opt_acquisition(self, X, num_samples, y):
+        Xsamples = self.op.search_space.sample_multiple(num_samples)
         # calculate the acquisition function for each sample
         scores = self.__acquisition(X, Xsamples)
         # locate the index of the largest scores

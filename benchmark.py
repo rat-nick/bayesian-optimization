@@ -7,7 +7,7 @@ def benchmark_func(array):
     return fitness
 
 
-def branin(array):
+def branin(array, *args, **kwargs):
     a = 1
     b = 5.1 / (4 * pi ** 2)
     c = 5 / pi
